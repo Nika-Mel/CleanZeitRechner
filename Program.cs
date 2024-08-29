@@ -18,4 +18,19 @@ Console.WriteLine("");
 
 //Berechne Cleanzeit
 TimeSpan cleanzeit = DateTime.Now.Subtract(cleantag);
-Console.WriteLine("Du bist " + Math.Floor(cleanzeit.TotalDays) + " Tage clean.");
+double tage = Math.Floor(cleanzeit.TotalDays);
+Console.Write("Du bist ");
+
+//Umrechnen in Jahre, Wochen und Tage
+if (tage > 364) {
+    double jahre = Math.Floor(tage / 365);
+    Console.Write(jahre + " Jahre, ");
+    tage %= jahre*365;
+}
+if (tage > 6){
+    double wochen = Math.Floor(tage / 7);
+    Console.Write(wochen + " Wochen und ");
+    tage %= wochen*7;
+}
+    
+Console.Write(tage + " Tage clean.");
