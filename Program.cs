@@ -29,8 +29,17 @@ if (tage > 364) {
 }
 if (tage > 6){
     double wochen = Math.Floor(tage / 7);
-    Console.Write(wochen + " Wochen und ");
-    tage %= wochen*7;
+    tage %= wochen * 7;
+    if (wochen > 3) {
+        double monate = Math.Floor(wochen * 0.230137);
+        Console.Write(monate + " Monate ");
+        wochen %= Math.Floor(monate * 0.230137);
+    }
+    if (wochen > 0)
+    {
+        Console.Write(wochen + ", Wochen ");
+    }
+    Console.Write("und ");
 }
     
 Console.Write(tage + " Tage clean.");
