@@ -24,6 +24,8 @@ double tage = Math.Floor(cleanzeit.TotalDays);
 Console.Write("Du bist ");
 
 //Umrechnen in Jahre, Monate, Wochen und Tage
+
+//Berechne Jahreanzahl
 if (tage > 364)
     {
         //Setze absofort Komma oder schreibe "und"
@@ -48,7 +50,7 @@ if (tage > 364)
             Console.Write(jahre + " Jahre.");
         }
     }
-    //Nur innerhalb eines Monats
+    //Cleanzeit nur innerhalb eines Monats
     if ((tage > 29) && (tage < 32))
     {
         double monate = Math.Floor(tage / 30.416667);
@@ -78,6 +80,8 @@ if (tage > 364)
         //Setze ab sofort Komma oder schreibe "und"
         and = true;
     }
+
+    //Berechne Wochenanzahl
     if (tage > 6)
     {
         double wochen = Math.Floor(tage / 7);
@@ -169,7 +173,7 @@ if (tage > 364)
         and = true;
     }
 
-
+    //Schreibe Tageanzahl
     if (tage > 0)
     {
         //Schreibe "und".
