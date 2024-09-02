@@ -19,27 +19,5 @@ Console.WriteLine("");
 //Berechne Cleanzeit
 TimeSpan cleanzeit = DateTime.Now.Subtract(cleantag);
 double tage = Math.Floor(cleanzeit.TotalDays);
-Console.Write("Du bist ");
+Console.Write("Du bist "+tage+" Tage clean.");
 
-//Umrechnen in Jahre, Monate, Wochen und Tage
-if (tage > 364) {
-    double jahre = Math.Floor(tage / 365);
-    Console.Write(jahre + " Jahre");
-    tage %= jahre*365;
-}
-if (tage > 6){
-    double wochen = Math.Floor(tage / 7);
-    tage %= wochen * 7;
-    //Wenn Wochen > 3 dann berechne die Anzahl der Monate
-    if (wochen > 3) {
-        double monate = Math.Floor(wochen * 0.230137);
-        Console.Write(", "+monate + " Monate");
-        wochen %= Math.Floor(monate * 0.230137);
-    }
-    if (wochen > 0)
-    {
-        Console.Write(", "+wochen + " Wochen");
-    }
-}
-    
-Console.Write(" und "+tage + " Tage clean.")
