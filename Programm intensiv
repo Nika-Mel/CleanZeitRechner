@@ -25,177 +25,124 @@ Console.Write("Du bist ");
 
 //Umrechnen in Jahre, Monate, Wochen und Tage
 
-//Berechne Jahreanzahl
-if (tage > 364)
-    {
-        //Setze absofort Komma oder schreibe "und"
+//Jahre berechnen
+if ((tage >= 365)||(jahr < (Convert.ToInt32(DateTime.Now.Year))))
+{
+  //Setze absofort Komma oder schreibe "und"
         and = true;
 
-        double jahre = Math.Floor(tage / 365);
-        tage %= jahre * 365;
-        if ((jahre == 1) && (tage > 0))
+        double jahre = Math.Floor(tage / 365.5);
+        tage %= Math.Ceiling(jahre * 365.5);
+    
+ //Wenn eingegebener Tag und eingegebner Monat jeweils gleich zum Zeitdatum sind, addiere ein Jahr und setze Tage auf 0.
+        if((tag == (Convert.ToInt32(DateTime.Now.Day)))&&(monat == Convert.ToInt32(DateTime.Now.Month)))
         {
-            Console.Write(jahre + " Jahr");
+        jahre = Convert.ToDouble(Convert.ToInt32(DateTime.Now.Year) - jahr);
+        tage = 0;
         }
-        if ((jahre > 1) && (tage > 0))
-        {
-            Console.Write(jahre + " Jahre");
-        }
-        if ((jahre == 1) && (tage == 0))
-        {
-            Console.Write(jahre + " Jahr.");
-        }
-        if ((jahre > 1) && (tage == 0))
-        {
-            Console.Write(jahre + " Jahre.");
-        }
-    }
-    //Cleanzeit nur innerhalb eines Monats
-    if ((tage > 29) && (tage < 32))
-    {
-        double monate = Math.Floor(tage / 30.416667);
-        tage %= Math.Floor(monate * 30.416667);
 
+ //SchreibeJahresanzahl
+ schreibWert(jahre, tage, "Jahr", "Jahre");
+}
+
+//Monate berechnen 
+    if (tage > 29)
+    {
+    double monate = 0;
+    
+// Folge den Anweisungen wenn eingegebener Tag gleich mit Tag des Zeitstempels ist 
+    if (tag == (Convert.ToInt32(DateTime.Now.Day)))
+    {
+        //Setze aktuellen Zeitstempelmonat in Variable
+        int aktuellMonat = Convert.ToInt32(DateTime.Now.Month);
+
+        //Wenn Zeitstempelmonat größer eingegebener Monat ist errechne die Differenz
+        if (aktuellMonat > monat)
+        {
+            monate = Convert.ToDouble(aktuellMonat - monat);
+            tage = 0;
+        }
+
+//Wenn Zeitstempelmonat kleiner eingegebener Monat zähle Zeitstempelmonat zur Differenz zwischen eingegebener Monat und letzten Monat im Jahr hinzu
+        if (aktuellMonat < monat)
+        {
+            monate = Convert.ToDouble(aktuellMonat + (12 - monat));
+            tage = 0;
+        }
+
+        //Ist nur möglich bei Fehler in der Jahresberechnung
+        if (aktuellMonat == monat)
+        {
+            tage = 0;
+        }
+
+    }
+
+
+//Anweisungen folgen nur wenn eingegebener Tag nicht mit Zeitstempeltag übereinstimmt
+    if (tag != (Convert.ToInt32(DateTime.Now.Day)))
+    {
+        
+        monate = Math.Floor(tage / 30.416667);
+        if (monate != 0)
+        {
+            tage %= Math.Floor(monate * 30.416667);
+        }
+       
+    }
+        
+    
     //Schreibe "und" oder setze ",".
     andOrKomma(tage, and);
 
-        //Schreibe Monatsanzahl
-        if ((monate == 1) && (tage > 0))
-        {
-            Console.Write(monate + " Monat");
-        }
-        if ((monate > 1) && (tage > 0))
-        {
-            Console.Write(monate + " Monate");
-        }
-        if ((monate == 1) && (tage == 0))
-        {
-            Console.Write(monate + " Monat.");
-        }
-        if ((monate > 1) && (tage == 0))
-        {
-            Console.Write(monate + " Monate.");
-        }
+    //Schreibe Monatsanzahl
+    schreibWert(monate, tage, "Monat", "Monate");
 
-        //Setze ab sofort Komma oder schreibe "und"
-        and = true;
-    }
+    //Setze ab sofort Komma oder schreibe "und"
+    and = true;
+}
 
-    //Berechne Wochenanzahl
-    if (tage > 6)
+//Wochen berechnen
+if (tage > 6)
+{
+   double wochen = Math.Floor(tage / 7);
+   tage %= wochen * 7;
+
+//Schreibe "und" oder setze ",".
+    andOrKomma(tage, and);
+
+//Schreibe Wochenanzahl
+    schreibWert(wochen, tage, "Woche", "Wochen");
+
+//Setze ab sofort Komma oder schreibe "und"
+    and = true;
+}
+
+//Setze Tage
+if (tage > 0)
+{
+
+//Schreibe "und".
+   if (and == true)
+   {
+       Console.Write(" und ");
+   }
+
+//Schreibe Tageanzahl
+    if (tage > 1)
     {
-        double wochen = Math.Floor(tage / 7);
-        tage %= wochen * 7;
-
-        //Schreibe "und" oder setze ",".
-        andOrKomma(tage, and);
-    
-
-    //Wenn Wochen > 3 dann berechne die Anzahl der Monate
-    if (wochen > 3)
-        {
-            double monate = Math.Floor(wochen * 0.230137);
-            wochen %= Math.Floor(monate * 0.230137);
-            //Schreibe wenn mehrere Monate und Wochen vorhanden sind.
-            if ((tage == 0) && (monate > 1) && (wochen > 1))
-            {
-                Console.Write(monate + " Monate und " + wochen + " Wochen.");
-            }
-            if ((tage != 0) && (monate > 1) && (wochen > 1))
-            {
-                Console.Write(monate + " Monate, " + wochen + " Wochen");
-            }
-            //Schreibe wenn nur maximal 1 Monat und 1 Woche vorhanden sind.
-            if ((tage == 0) && (monate == 1) && (wochen == 1))
-            {
-                Console.Write(monate + " Monat und " + wochen + " Woche.");
-            }
-            if ((tage != 0) && (monate == 1) && (wochen == 1))
-            {
-                Console.Write(monate + " Monat, " + wochen + " Woche");
-            }
-            //Schreibe wenn mehrere Monate und nur 1 Woche vorhanden sind. 
-            if ((tage == 0) && (monate > 1) && (wochen == 1))
-            {
-                Console.Write(monate + " Monate und " + wochen + " Woche.");
-            }
-            if ((tage != 0) && (monate > 1) && (wochen == 1))
-            {
-                Console.Write(monate + " Monate, " + wochen + " Woche");
-            }
-            //Schreibe wenn nur 1 Monat und mehrere Wochen vorhanden sind.
-            if ((tage == 0) && (monate == 1) && (wochen > 1))
-            {
-                Console.Write(monate + " Monat und " + wochen + " Wochen.");
-            }
-            if ((tage != 0) && (monate == 1) && (wochen > 1))
-            {
-                Console.Write(monate + " Monat, " + wochen + " Wochen");
-            }
-            //Schreibe wenn nur 1 Monat und keine Woche vorhanden ist.
-            if ((tage == 0) && (wochen == 0) && (monate == 1))
-            {
-                Console.Write(monate + " Monat.");
-            }
-            if ((tage != 0) && (wochen == 0) && (monate == 1))
-            {
-                Console.Write(monate + " Monat");
-            }
-            //Schreibe wenn mehrere Monate aber keine Woche vorhanden ist.
-            if ((tage == 0) && (wochen == 0) && (monate > 1))
-            {
-                Console.Write(monate + " Monate.");
-            }
-            if ((tage > 1) && (wochen == 0) && (monate > 1))
-            {
-                Console.Write(monate + " Monate");
-            }
-        }
-        //Schreibe Wochenanzahl wenn kein Monat erreicht.
-        if ((wochen == 1) && (tage > 0))
-        {
-            Console.Write(wochen + " Woche");
-        }
-        if ((wochen > 1) && (tage > 0))
-        {
-            Console.Write(wochen + " Wochen");
-        }
-        if ((wochen == 1) && (tage != 0))
-        {
-            Console.Write(wochen + " Woche.");
-        }
-        if ((wochen > 1) && (tage != 0))
-        {
-            Console.Write(wochen + " Wochen.");
-        }
-
-        //Setze ab sofort Komma oder schreibe "und"
-        and = true;
+        Console.Write(tage + " Tage clean.");
     }
-
-    //Schreibe Tageanzahl
-    if (tage > 0)
+    if (tage == 1)
     {
-        //Schreibe "und".
-        if (and == true)
-        {
-            Console.Write(" und ");
-        }
-
-        //Schreibe Tage
-        if (tage > 1)
-        {
-            Console.Write(tage + " Tage clean.");
-        }
-        if (tage == 1)
-        {
-            Console.Write(tage + " Tag clean.");
-        }
+         Console.Write(tage + " Tag clean.");
+    }
 }
 
 
 
-    //Schreibe "und" oder setze ",".
+    
+//Schreibe "und" oder setze ",".
    static  void andOrKomma(double tage, bool and)
     {
         if ((and == true) && (tage > 0))
@@ -207,3 +154,24 @@ if (tage > 364)
             Console.Write(" und ");
         }
     }
+
+//Schreibe Anzahl des Wertes auf
+ static void schreibWert(double wertzahl, double tage, string wert, string wertMehrzahl)
+ {
+    if ((wertzahl == 1) && (tage > 0))
+    {
+        Console.Write(wertzahl + " "+wert);
+    }
+    if ((wertzahl > 1) && (tage > 0))
+    {
+        Console.Write(wertzahl + " "+wertMehrzahl);
+    }
+    if ((wertzahl == 1) && (tage == 0))
+    {
+        Console.Write(wertzahl + " " + wert + " clean.");
+    }
+    if ((wertzahl > 1) && (tage == 0))
+    {
+        Console.Write(wertzahl + " " + wertMehrzahl  + " clean.");
+    }
+ }
